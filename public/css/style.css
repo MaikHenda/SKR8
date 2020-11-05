@@ -1,0 +1,26 @@
+body {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.9) 22.4%,
+    rgba(53, 40, 21, 0.9) 49.48%,
+    rgba(0, 0, 0, 0.895312) 78.12%
+  );
+  width: 100% !important;
+  height: 100vh !important;
+  overflow-x: hidden;
+}
+.splash {
+  width: 100% !important;
+  height: 100vh !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.logo {
+  width: 500px auto;
+  height: 500px auto;
+}
+.welkom {
+  width: 500px auto;
+}

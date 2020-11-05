@@ -1,0 +1,35 @@
+body {
+    background: rgba(255, 255, 255, 0.9);;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 300px;
+}
+.bbtn {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 324px;
+    text-align: center;
+    height: 53px;
+    background: rgba(237, 19, 19, 0.9);
+    border: 2px solid #000000;
+    font-size: 24px;
+    color: #ffffff;
+}
+.bbtn:focus {
+    outline: none;
+}
+.img1 {
+    margin-bottom: 35px;
+}
+.img2 {
+    margin-bottom: 0;
+}
+.btn {
+    margin-top: 200px;
+}

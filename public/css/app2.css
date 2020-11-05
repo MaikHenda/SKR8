@@ -1,0 +1,33 @@
+body {
+  background-color: black;
+  overflow: hidden;
+  width: 100% !important;
+}
+.nav {
+  width: 100% !important;
+  height: 60px;
+  background-color: black;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100% !important;
+  height: 60px;
+  background-color: white;
+}
+.map {
+  width: 100% !important;
+  height: 75vh !important;
+}
+.app {
+  width: 100% !important;
+  height: 78vh !important;
+  background-color: #fff;
+}
+.title {
+  align-items: center;
+}
