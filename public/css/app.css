@@ -5,23 +5,55 @@ body {
 }
 .nav {
   width: 100% !important;
-  height: 60px;
+  height: 70px;
   background-color: black;
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
 }
 .footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
   width: 100% !important;
-  height: 60px;
-  background-color: white;
+  height: 60px !important;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
 }
 .map {
   width: 100% !important;
   height: 75vh !important;
+  position: relative;
+}
+.search-location {
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  padding: 5px;
+  top: 05%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 1;
+}
+.search-input {
+    padding: 4px;
+    border-bottom: 2px solid #fff;
+    width: 90%;
+    background: none;
+    border: none;
+    outline: none;
+}
+.fa-search {
+  font-size: 18px;
+  margin: 0 10px 0 10px;
+}
+.fa-angle-down {
+  margin: 0 10px 0 10px;
+  font-size: 28px;
+}
+.loc-icons {
+  display: flex;
 }
 .app {
   width: 100% !important;
@@ -30,4 +62,25 @@ body {
 }
 .title {
   align-items: center;
+}
+.map-icons {
+  position: absolute;
+  height: 170px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-family: 'Lato', sans-serif;
+  border: 1px solid #000000;
+  background: rgba(255, 255, 255, 0.6);
+  display: none;
+}
+.maps-icon:onclick {
+  display: block;
+}
+.map-box {
+  margin-top: 80px;
+}
+.rail-text {
+  width: 40px;
 }

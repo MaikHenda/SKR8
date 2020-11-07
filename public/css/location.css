@@ -21,8 +21,13 @@ body {
     font-size: 24px;
     color: #ffffff;
 }
+a {
+    text-decoration: none;
+}
 .bbtn:focus {
     outline: none;
+    text-decoration: none;
+    
 }
 .img1 {
     margin-bottom: 35px;

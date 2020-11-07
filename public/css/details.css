@@ -16,7 +16,7 @@ body {
 .container {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 900px;
     display: flex;
     flex-direction: column;
     justify-content: center;

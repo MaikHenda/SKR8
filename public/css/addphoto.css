@@ -1,7 +1,7 @@
 body {
   background-color: black;
   overflow: hidden;
-  
+  width: 100% !important;
 }
 .nav {
   width: 100% !important;
@@ -29,14 +29,14 @@ h1 {
 }
 .map {
   width: 100% !important;
-<<<<<<< HEAD
-  height: 1000px;
-=======
   height: 90vh !important;
->>>>>>> 9a9541b3548558e4fafa26196e33edfd5e24d61d
+}
+.spot {
+  width: 100%;
+  height: 580px;
 }
 .spotText {
-  background-color: rgba(255,255,255,0.9);
+  background-color: white;
   width: 100% !important;
   height: 20vh;
   display: flex;
