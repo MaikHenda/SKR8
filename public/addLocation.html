@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="./css/skate.css" />
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUdo2fUwDlGzvhrZn9aMAFpWWiSOYJEGw&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCyLZ_IkVWuvVioIo0lOgt1RLQf6WVUTN0",
+        authDomain: "skr8-daf74.firebaseapp.com",
+        databaseURL: "https://skr8-daf74.firebaseio.com",
+        projectId: "skr8-daf74",
+        storageBucket: "skr8-daf74.appspot.com",
+        messagingSenderId: "803590686527",
+        appId: "1:803590686527:web:32ea6574661aba8faa758a",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <style>
+      #selectBox {
+        background-color: gray;
+        width: 100%;
+      }
+
+      #map {
+        position: fixed !important;
+        height: 100% !important;
+        width: 100% !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="nav">
+      <a href="./app.html">
+        <img src="./assets/images/arrow.png" />
+      </a>
+
+      <img src="./assets/images/VOEG TYPE TOE.png" alt="heading" />
+    </div>
+    <div class="container">
+      <div class="box1">
+        <p id="box1">
+          Sleep de kaart om de pin op de locatie te zetten waar je spot zich
+          bevindt.
+        </p>
+      </div>
+    </div>
+    <div id="map"></div>
+    <div class="footer">
+      <a onclick="addLocation()" class="ftext2">GA VERDER</a>
+    </div>
+  </body>
+  <script>
+    let map;
+    let currentLatitude;
+    let currentLongitude;
+    function initMap() {
+      let check = navigator.geolocation.getCurrentPosition((position) => {
+      
+        currentLatitude = position.coords.latitude;
+        currentLongitude = position.coords.longitude;
+      
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: +currentLatitude, lng: +currentLongitude },
+          zoom: 8,
+        });
+        let marker = new google.maps.Marker({
+          position: { lat: +currentLatitude, lng: +currentLongitude },
+          map: map,
+        });
+        map.addListener("click", (mapsMouseEvent) => {
+          addMarker(mapsMouseEvent.latLng.toJSON());
+        });
+      });
+    }
+
+    let previousMarker;
+    let placeCoordinates;
+    function addMarker(coords) {
+      let icon;
+      placeCoordinates = coords;
+
+      var marker;
+      if (previousMarker !== undefined) previousMarker.setMap(null);
+      marker = new google.maps.Marker({
+        position: coords,
+        map: map,
+      });
+
+      previousMarker = marker;
+    }
+
+    let userId = localStorage.getItem("userId");
+
+    function addLocation() {
+      // if (selectorName !== undefined) {
+      pushKey = firebase
+        .database()
+        .ref(`users/${userId}/spots`)
+        .push({
+          coordinates: placeCoordinates,
+        })
+        .then((success) => {
+          console.log("push key", success.key);
+          localStorage.setItem("spotKey", success.key);
+          window.location = "addPhoto2.html";
+        });
+      // } else {
+      //   alert("First select a mark on any place on map");
+      // }
+    }
+  </script>
+</html>

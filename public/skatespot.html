@@ -1,42 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <link rel="stylesheet" href="./css/skate.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
-            <div class="nav">
-                <a href="./addPhoto.html">
-                    <img src="./assets/images/arrow.png"/>
-                </a>
-               
-                <img src="./assets/images/VOEG TYPE TOE.png" alt="heading">
-            </div>
-            
-            <div class="container">
-                <div class="box1">
-                    <img src="./assets/images/Kies het meest passende type skate spot door een icoon te selecteren.png" alt="">
-                </div>
-                <div class="box2 flex">
-                    <img src="./assets/images/Parkicon.png" alt="">
-                    <p class="btext">Parken</p>
-                </div>
-                <div class="box3 flex">
-                    <img src="./assets/images/QuarterParkIcon.png" alt="">
-                    <p class="btext">Ramps</p>
-                </div>
-                <div class="box4 flex">
-                    <img src="./assets/images/RailIcon.png" alt="">
-                    <p class="btext">Ramps</p>
-                </div>
-            </div>
-            <div class="footer">
-                <a href="./details.html">
-                    <img src="./assets/images/spotFooter.png" alt="SPOT" />
-                </a>
-            </div>
-</body>
+    <link rel="stylesheet" href="./css/skate.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCyLZ_IkVWuvVioIo0lOgt1RLQf6WVUTN0",
+        authDomain: "skr8-daf74.firebaseapp.com",
+        databaseURL: "https://skr8-daf74.firebaseio.com",
+        projectId: "skr8-daf74",
+        storageBucket: "skr8-daf74.appspot.com",
+        messagingSenderId: "803590686527",
+        appId: "1:803590686527:web:32ea6574661aba8faa758a",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <style>
+      #selectBox {
+        background-color: gray;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="nav">
+      <a href="./addPhoto.html">
+        <img src="./assets/images/arrow.png" />
+      </a>
+
+      <img src="./assets/images/VOEG TYPE TOE.png" alt="heading" />
+    </div>
+    <div class="container">
+      <div class="box1">
+        <p id="box1">
+          Kies het meest passende type skate door een icoon te selecteren
+        </p>
+      </div>
+      <div onclick="selectType(this)" class="box2 flex" id="parken">
+        <img src="./assets/images/Parkicon.png" alt="" />
+        <p class="btext">Parken</p>
+      </div>
+      <div onclick="selectType(this)" class="box3 flex" id="ramp">
+        <img src="./assets/images/QuarterParkIcon.png" alt="" />
+        <p class="btext">Ramps</p>
+      </div>
+      <div onclick="selectType(this)" class="box4 flex" id="rail">
+        <img src="./assets/images/RailIcon.png" alt="" />
+        <p class="btext">Rails</p>
+      </div>
+    </div>
+    <div class="footer">
+      <a onclick="goNext()" class="ftext2">GA VERDER</a>
+    </div>
+    <script>
+      let previousSelector;
+      let selectorName;
+      function selectType(e) {
+        if (previousSelector === undefined) {
+          console.log("p s", previousSelector);
+          previousSelector = e;
+          selectorName = e.id;
+        }
+        console.log("e", e.id);
+        if (
+          previousSelector.style.backgroundColor === "grey" &&
+          previousSelector.style.width === "100%"
+        ) {
+          previousSelector.style.backgroundColor = "";
+        }
+        e.style.backgroundColor = "grey";
+        e.style.width = "100%";
+        previousSelector = e;
+        selectorName = e.id;
+      }
+
+      let userId = localStorage.getItem("userId");
+      function goNext() {
+        if (selectorName === undefined) {
+          alert("Please select skat first");
+        } else {
+          let spotKey = localStorage.getItem("spotKey");
+          firebase
+            .database()
+            .ref(`users/${userId}/spots/${spotKey}`)
+            .update({
+              iconType: selectorName,
+            })
+            .then((success) => {
+              console.log("push key", success);
+              window.location = "skatedetails.html";
+            });
+        }
+      }
+    </script>
+  </body>
 </html>

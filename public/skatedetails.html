@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skate Details</title>
+    <link rel="stylesheet" href="./css/skatedetail.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+     <!-- The core Firebase JS SDK is always required and must be listed first -->
+     <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+ 
+     <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+ 
+     <script>
+       // Your web app's Firebase configuration
+       var firebaseConfig = {
+         apiKey: "AIzaSyCyLZ_IkVWuvVioIo0lOgt1RLQf6WVUTN0",
+         authDomain: "skr8-daf74.firebaseapp.com",
+         databaseURL: "https://skr8-daf74.firebaseio.com",
+         projectId: "skr8-daf74",
+         storageBucket: "skr8-daf74.appspot.com",
+         messagingSenderId: "803590686527",
+         appId: "1:803590686527:web:32ea6574661aba8faa758a",
+       };
+       // Initialize Firebase
+       firebase.initializeApp(firebaseConfig);
+     </script>
+    <style>
+        .checked{
+            color:orange;
+        }
+        .heart{
+            color:red;
+        }
+        .drukte{
+            color:green;
+        }
+
+        .spike-box{
+            background-color:green;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <i class="fa fa-arrow-left"></i>
+        <h1 class="navh1">VOEG DETAILS TOE</h1>
+    </div>
+
+    <div class="container">
+        <div class="para">
+            Geef de spot een rating op basis van onderstaande factoren,
+        </div>
+        <div id="rate-heart" class="rate-heart">
+            <p class="rate-p">Rating</p>
+            <i onclick="giveHeart(this,1)"class="fa fa-heart heart" aria-hidden="true"></i>
+            <i onclick="giveHeart(this,2)"class="fa fa-heart heart" aria-hidden="true"></i>
+            <i onclick="giveHeart(this,3)"class="fa fa-heart heart" aria-hidden="true"></i>
+            <i onclick="giveHeart(this,4)"class="fa fa-heart heart" aria-hidden="true"></i>
+            <i onclick="giveHeart(this,5)"class="fa fa-heart " aria-hidden="true"></i>
+        </div>
+        <div id="rate-stars" class="stars">
+            <p class="rate-p">Moeiliijkheid</p>
+            <i onclick="giveRating(this,1)" class="fa fa-star checked" ></i>
+            <i onclick="giveRating(this,2)" class="fa fa-star checked" aria-hidden="true"></i>
+            <i onclick="giveRating(this,3)" class="fa fa-star checked" aria-hidden="true"></i>
+            <i onclick="giveRating(this,4)" class="fa fa-star checked" aria-hidden="true"></i>
+            <i onclick="giveRating(this,5)" class="fa fa-star " aria-hidden="true"></i>
+        </div>
+        <div id="rate-drukte" class="rate-drukte">
+            <p class="rate-p">Drukte</p>
+            <i onclick="giveDrukte(this,1)"class="fa fa-user drukte" aria-hidden="true"></i>
+            <i onclick="giveDrukte(this,2)"class="fa fa-user drukte" aria-hidden="true"></i>
+            <i onclick="giveDrukte(this,3)"class="fa fa-user drukte" aria-hidden="true"></i>
+            <i onclick="giveDrukte(this,4)"class="fa fa-user drukte" aria-hidden="true"></i>
+            <i onclick="giveDrukte(this,5)"class="fa fa-user " aria-hidden="true"></i>
+        </div>
+        <div class="spike">
+            <p class="rate-p">Spikes</p>
+            <div class="boxes">
+                <div id="box1" onclick="chooseSpike(this)"  class="box1 spike-box">
+                    <p class="box-p ">Yes</p>
+                </div>
+                <div id="box2" onclick="chooseSpike(this)" class="box2">
+                    <p  class="box-p">No</p>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div class="footer">
+        
+            <a onclick="goNext()" >VOEG SPOT TOE</a>
+            
+        </a>
+    </div>
+
+  
+</body>
+<script>
+
+let star = document.getElementById("rate-stars");
+let heart = document.getElementById("rate-heart");
+let drukte = document.getElementById("rate-drukte");
+let starCount = 4;
+let heartCount =4;
+let  drukteCount = 4;
+
+    function giveRating(e, limit){
+    startCount = limit;
+    for(var i= 1; i < star.children.length; i++){
+       
+        if(i <= limit){
+            star.children[i].className = "fa fa-star checked";
+        }else {
+            star.children[i].className = "fa fa-star"
+        }
+      
+    }
+    }
+
+    function giveHeart(e, limit){
+       heartCount = limit;
+       for(var i= 1; i < heart.children.length; i++){
+           
+           if(i <= limit){
+            heart.children[i].className = "fa fa-heart heart";
+           }else {
+            heart.children[i].className = "fa fa-heart"
+           }
+         
+       }
+       }
+
+       function giveDrukte(e, limit){
+       drukteCount = limit;
+       for(var i= 1; i < drukte.children.length; i++){
+          
+           if(i <= limit){
+            drukte.children[i].className = "fa fa-user drukte";
+           }else {
+            drukte.children[i].className = "fa fa-user"
+           }
+         
+       }
+       }
+
+       let isSpike = true;
+       let prevSpike;
+       let box1 = document.getElementById("box1");
+       let box2 = document.getElementById("box2");
+
+       function chooseSpike(e){
+           
+            if(e.className === "box1"){
+                console.log('e', e.className)
+                e.className="box1 spike-box"
+                box2.className = "box2"
+                isSpike = true;
+                
+           }
+           else if(e.className === "box2"){
+            console.log('e', e.className)
+               e.className = "box2 spike-box";
+               box1.className = "box1"
+               isSpike = false;
+           }
+           
+         
+       }
+ 
+       let userId = localStorage.getItem("userId");
+       function goNext(){
+           console.log('s', starCount)
+        let spotKey = localStorage.getItem("spotKey");
+          firebase
+            .database()
+            .ref(`users/${userId}/spots/${spotKey}`)
+            .update({
+              stars: starCount,
+              hearts: heartCount,
+              drukte: drukteCount,
+              isSpike: isSpike
+            })
+            .then((success) => {
+              console.log("push key", success);
+              window.location = "details.html";
+            });
+                  }
+    
+</script>
+</html>

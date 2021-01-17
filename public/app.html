@@ -1,71 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="./assets/images/splash.png" type="image/png" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="shortcut icon"
+      href="./assets/images/splash.png"
+      type="image/png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    />
     <link rel="stylesheet" href="./css/app.css" />
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap"
+      rel="stylesheet"
+    />
 
     <title>SKR8</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUdo2fUwDlGzvhrZn9aMAFpWWiSOYJEGw&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
 
-   
-</head>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
 
-<body>
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCyLZ_IkVWuvVioIo0lOgt1RLQf6WVUTN0",
+        authDomain: "skr8-daf74.firebaseapp.com",
+        databaseURL: "https://skr8-daf74.firebaseio.com",
+        projectId: "skr8-daf74",
+        storageBucket: "skr8-daf74.appspot.com",
+        messagingSenderId: "803590686527",
+        appId: "1:803590686527:web:32ea6574661aba8faa758a",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      function getSpots(selector) {
+        let id = localStorage.getItem("userId").toString();
+      
+        const getData = firebase
+          .database()
+          .ref("users")
+          .child(id)
+          .child("spots");
+        getData.on("value", (snapshot) => {
+          snapshot.forEach((snap) => {
+        
+            if (selector === "parken map-box") {
+              if (snap.val().iconType === "parken") {
+                removeMarkers();
+               
+                addMarker(
+                  snap.val().coordinates,
+                  snap.val().iconType,
+                  snap.val().ImageUrl,
+                  snap.val().name
+                );
+              }
+            } else if (selector === "rails map-box") {
+              if (snap.val().iconType === "rail") {
+                removeMarkers();
+           
+                addMarker(
+                  snap.val().coordinates,
+                  snap.val().iconType,
+                  snap.val().ImageUrl,
+                  snap.val().name
+                );
+              }
+            } else if (selector === "ramps map-box") {
+              if (snap.val().iconType === "ramp") {
+                removeMarkers();
+             
+                addMarker(
+                  snap.val().coordinates,
+                  snap.val().iconType,
+                  snap.val().ImageUrl,
+                  snap.val().name
+                );
+              }
+            } else {
+              addMarker(
+                snap.val().coordinates,
+                snap.val().iconType,
+                snap.val().ImageUrl,
+                snap.val().name
+              );
+            }
+          });
+        });
+        (err) => {
+          console.log("error", err);
+        };
+      }
+    </script>
+  </head>
+
+  <body onload="getSpots()">
     <div class="nav">
-        <img src="./assets/images/user.png" alt="USER" />
-        <a href="app.html">
-            <img src="./assets/images/logo.png" alt="LOGO" />
-        </a>
-        <img src="./assets/images/add.png" alt="ADD" />
+      <img src="./assets/images/user.png" alt="USER" />
+      <a href="app.html">
+        <img src="./assets/images/logo.png" alt="LOGO" />
+      </a>
+      <img onclick="addLocation()" src="./assets/images/add.png" alt="ADD" />
     </div>
     <div class="map">
-        <div class="search-location">
-            <i class="fas fa-search"></i>
-            <input type="text" class="search-input" placeholder="Zoeken naar skatesspots" class="loc-input"/>
-            <i class="fas fa-angle-down" onchange="hide()" onclick="showtab()" id="angle-up"></i>
+      <div class="search-location">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Zoeken naar skatesspots"
+          class="loc-input"
+        />
+        <i
+          class="fas fa-angle-down"
+          onchange="hide()"
+          onclick="showtab()"
+          id="angle-up"
+        ></i>
+      </div>
+      <div class="map-icons" style="display: none" id="map-icons">
+        <div onclick="selectType(this)" class="parken map-box">
+          <img src="./assets/images/Parkicon.png" alt="" /><br />
+
+          <img src="./assets/images/Parken.png" alt="" />
         </div>
-        <div class="map-icons" id="map-icons">
-                <div class="parken map-box">
-                    <img src="./assets/images/Parkicon.png" alt=""><br>
-                    
-                    <img src="./assets/images/Parken.png" alt="">
-                </div>
-                <div class="ramps map-box">
-                    <img src="./assets/images/quarterpipeIcon.png" alt=""><br>
-                    <img src="./assets/images/Ramps.png" alt="">
-                </div>
-                <div class="rails map-box">
-                    <img src="./assets/images/RailIcon.png" alt=""><br>
-                    <img src="./assets/images/Rails.png" class="rail-text" alt="">
-                </div>
+        <div onclick="selectType(this)" class="ramps map-box">
+          <img src="./assets/images/quarterpipeIcon.png" alt="" /><br />
+          <img src="./assets/images/Ramps.png" alt="" />
         </div>
-        <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14472.400417106073!2d67.0928165!3d24.9286595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1603918001372!5m2!1sen!2s"
-            width="100%" height="100%" frameborder="0" style="border: 0" allowfullscreen="true" aria-hidden="false"
-            tabindex="0"></iframe>
+        <div onclick="selectType(this)" class="rails map-box">
+          <img src="./assets/images/RailIcon.png" alt="" /><br />
+          <img src="./assets/images/Rails.png" class="rail-text" alt="" />
+        </div>
+      </div>
+      <!-- <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d79568.70434784786!2d5.381298956011305!3d51.448571568217176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c6d91b5579c39f%3A0xf39ad2648164b998!2sEindhoven%2C%20Netherlands!5e0!3m2!1sen!2s!4v1605119820307!5m2!1sen!2s" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0">
+        </iframe> -->
+      <div id="map"></div>
     </div>
     <div class="footer">
-        <img src="./assets/images/map.png" alt="MAP" />
-        <a href="./spot.html">
-            <img src="./assets/images/addmain.png" alt="ADD" />
-        </a>
-        <a href="./scoreboard.html">
+      <img src="./assets/images/map.png" alt="MAP" />
+      <a href="./spot.html">
+        <img src="./assets/images/addmain.png" alt="ADD" />
+      </a>
+      <a href="./scoreboard.html">
         <img src="./assets/images/score.png" alt="SCORE" />
-
-        </a>
+      </a>
     </div>
-</body>
-<script>
-    function showtab() {
-        var angle = document.getElementById("angle-up").style.transform = "rotateZ(180deg)";
-        var mapDiv = document.getElementById("map-icons").style.display = "flex";       
-        
-    } 
+  </body>
+  <script>
+    // function getMakers(){
+    //     firebase.
+    // }
+
+    let map;
+    var currentLatitude;
+    var currentLongitude;
+    let gmarkers = [];
+
+    let previousSelector;
+    let selectorName;
+    function selectType(e) {
+      getSpots(e.className);
+      if (previousSelector === undefined) {
     
-</script>
+        previousSelector = e;
+        selectorName = e.className;
+      }
+     
+      if (previousSelector.style.backgroundColor === "white") {
+        previousSelector.style.backgroundColor = "";
+      }
+      e.style.backgroundColor = "white";
+      e.style.padding = "6px";
+      previousSelector = e;
+      selectorName = e.className;
+    }
+
+    let previousMarker;
+    function initMap() {
+      let check = navigator.geolocation.getCurrentPosition((position) => {
+        currentLatitude = position.coords.latitude;
+        currentLongitude = position.coords.longitude;
+    
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: +currentLatitude, lng: +currentLongitude },
+          zoom: 8,
+        });
+        let marker = new google.maps.Marker({
+          position: { lat: +currentLatitude, lng: +currentLongitude },
+          map: map,
+        });
+        // map.addListener("click", (mapsMouseEvent) => {
+        //   // if (selectorName === undefined) {
+        //   //   alert("Please select naar skatespots from the dropdown");
+        //   // } else {
+        //   addMarker(mapsMouseEvent.latLng.toJSON());
+        //   // }
+
+        //   // // Close the current InfoWindow.
+        //   // infoWindow.close();
+        //   // // Create a new InfoWindow.
+        //   // infoWindow = new google.maps.InfoWindow({
+        //   //   position: mapsMouseEvent.latLng,
+        //   // });
+
+        //   // infoWindow.setContent(
+        //   //   JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+        //   // );
+        //   // infoWindow.open(map);
+        // });
+      });
+    }
+
+    let placeCoordinates;
+    let lastWindow;
+    function addMarker(coords, iconType, image, name) {
+      let previousInfo = false;
+    
+      let icon;
+      placeCoordinates = coords;
+
+      if (iconType === "parken") {
+        icon = "./assets/images/Parkicon.png";
+      } else if (iconType === "rail") {
+        icon = "./assets/images/RailIcon.png";
+      } else if (iconType === "ramp") {
+        icon = "./assets/images/quarterpipeIcon.png";
+      }
+      var marker;
+ 
+      if (previousMarker !== undefined) previousMarker.setMap(null);
+      marker = new google.maps.Marker({
+        position: coords,
+        map: map,
+        icon: icon,
+      });
+      const infowindow = new google.maps.InfoWindow({
+        content: `<div style="display:flex">
+         <div><img style="width:90px; height:80px"  src='${image}' /></div>
+         <div style="text-align:center; width:110px"><h4>${name}</h4>
+           <p>${iconType}</p>
+         </div>
+        </div>`,
+      });
+
+      marker.addListener("click", () => {
+        if (lastWindow !== undefined) lastWindow.close();
+
+        lastWindow = infowindow;
+        infowindow.open(map, marker);
+      });
+      gmarkers.push(marker);
+      // previousMarker = marker;
+    }
+
+    function removeMarkers() {
+      for (i = 0; i < gmarkers.length; i++) {
+        gmarkers[i].setMap(null);
+      }
+    }
+
+    let pushKey = null;
+    let userId = localStorage.getItem("userId");
+
+    function addLocation() {
+      window.location = "addLocation.html";
+      // if (selectorName !== undefined) {
+      // console.log("selec previ", selectorName, placeCoordinates);
+      // pushKey = firebase
+      //   .database()
+      //   .ref(`users/${userId}/spots`)
+      //   .push({
+      //     coordinates: placeCoordinates,
+      //   })
+      //   .then((success) => {
+      //     console.log("push key", success.key);
+      //     localStorage.setItem("spotKey", success.key);
+      //     window.location = "addPhoto2.html";
+      //   });
+      // // } else {
+      // //   alert("First select a mark on any place on map");
+      // // }
+    }
+
+    let isTab = false;
+    function showtab() {
+      // var angle = (document.getElementById("angle-up").style.zIndex = '2');
+      if (isTab === false) {
+        var mapDiv = (document.getElementById("map-icons").style.display =
+          "flex");
+        isTab = true;
+      } else {
+        var mapDiv = (document.getElementById("map-icons").style.display =
+          "none");
+        isTab = false;
+        getSpots();
+      }
+    }
+  </script>
 </html>

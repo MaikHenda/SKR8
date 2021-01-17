@@ -7,39 +7,104 @@
     <title>Add Photo</title>
     <link rel="stylesheet" href="./css/spot2.css" />
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-storage.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCyLZ_IkVWuvVioIo0lOgt1RLQf6WVUTN0",
+            authDomain: "skr8-daf74.firebaseapp.com",
+            databaseURL: "https://skr8-daf74.firebaseio.com",
+            projectId: "skr8-daf74",
+            storageBucket: "skr8-daf74.appspot.com",
+            messagingSenderId: "803590686527",
+            appId: "1:803590686527:web:32ea6574661aba8faa758a",
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
+
 <body>
-   <div class="nav">
-    <a href="./spot.html">
-    <img src="./assets/images/arrow.png" alt="">
-    </a>
-    <img src="./assets/images/addButton.png" alt="">
-   </div>
-   <div class="text">
-        <img src="./assets/images/Maak een foto van je spot of kies een foto uit je gallerij. Geen screenshots!.png" alt="">
-   </div>
-   <div class="bodyfile">
-    <div class="box1">
-            <p class="para">Maak Foto</p>
-            <p class="para">Kies Uit Gallerij</p>
-            <p class="pbox1">Annuleer</p>
-    </div>
-   </div>
-   <div class="footer">
-    <div class="footer1">
-        
-        <img src="./assets/images/addButton.png" alt="">
-
-       
-    </div>
-    <div class="footer2">
-        <a href="./addPhoto.html">
-        <img src="./assets/images/spotFooter.png" alt="">
-
+    <div class="nav">
+        <a href="./spot.html">
+            <img src="./assets/images/arrow.png" alt="">
         </a>
+        <img src="./assets/images/addButton.png" alt="">
     </div>
-   </div>
+    <div class="text">
+        <p class="ptext">Maak een foto van je spot of kies een foto uit je gallerij. Geen screenshots!</p>
+    </div>
+    <div class="bodyfile">
+        <div class="box1" id="box1">
+            <p class="para">Maak Foto</p>
+            <p class="para">Kies Uit Gallerij <input type="file" id="spotImage" value="test" /></p>
+            <p class="pbox1">Annuleer</p>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer1">
+            <a class="ftext" onclick="showtab()">VOEG FOTO TOE</a>
+        </div>
+        <div class="footer2">
+            <a onclick="addPhoto()" class="ftext2">GA VERDER</a>
+        </div>
+    </div>
+    </div>
 </body>
+<script>
+    function showtab() {
+        var box = document.getElementById("box1").style.display = "block";
+    }
 
+    let userId = localStorage.getItem("userId");
+    function addPhoto() {
+        let image = document.getElementById("spotImage").files[0];
+        let spotKey = localStorage.getItem("spotKey");
+        
+        let ImgUrl;
+        let uploadImage = firebase.storage()
+            .ref(`Images/${spotKey}/${image.name}`).put(image);
+
+        uploadImage.on('state_changed', (snapshot) => {
+            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            //document.getElementById("UpProgress").innerHTML = "Upload" + progress+ "%";   
+        },
+            (error) => {
+                alert("error in saving image")
+            },
+
+            () => {
+                uploadImage.snapshot.ref.getDownloadURL()
+                    .then((url) => {
+                        console.log('url', url)
+                        ImgUrl = url;
+                        localStorage.setItem("spotImage", url)
+                    }).then(() => {
+                        firebase.database().ref(`users/${userId }/spots/${spotKey}`)
+                            .update({
+                                ImageUrl: ImgUrl
+                            }).then(success => {
+                                console.log('stored', success)
+                                window.location = "addPhoto.html";
+                            })
+                    })
+
+
+            }
+        )
+
+
+
+        //window.location.replace("./addPhoto.html")
+
+
+    }
+</script>
 
 </html>

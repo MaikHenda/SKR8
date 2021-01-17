@@ -1,38 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>Add Photo</title>
     <link rel="stylesheet" href="./css/addphoto.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-</head>
-
-<body>
+  <body>
     <div class="nav">
-        <a href="spot.html">
-            <img src="./assets/images/arrow.png" alt="Arrow" />
-        </a>
-        <a href="app.html">
-            <img src="./assets/images/addPhoto.png" alt="LOGO" />
-        </a>
+      <a href="spot.html">
+        <img src="./assets/images/arrow.png" alt="Arrow" />
+      </a>
+      <a href="app.html">
+        <img src="./assets/images/addPhoto.png" alt="LOGO" />
+      </a>
     </div>
     <div class="spotText">
-        <img src="./assets/images/addPhotoText.png" alt="Text" width="150px" />
+      <p>
+        Maak een foto van je spot<br />
+        of kies een foto uit je gallerij.<br />
+        Geen Screenshots!
+      </p>
     </div>
     <div class="spot">
-        <img src="./assets/images/park.png" width="100%" height="100%">
+      <img
+        id="spotImage"
+        src="./assets/images/park.png"
+        width="100%"
+        height="100%"
+      />
     </div>
     <div class="choosefile">
-        <img src="./assets/images/addButton.png" alt="ADD" width="150px" />
+      <img src="./assets/images/addButton.png" alt="ADD" width="150px" />
     </div>
     <div class="footer">
-        <a href="./skatespot.html">
-            <img src="./assets/images/spotFooter.png" alt="SPOT" />
-        </a>
-       
+      <a href="./skatespot.html">
+        <img
+          onclick="nextPage()"
+          src="./assets/images/spotFooter.png"
+          alt="SPOT"
+        />
+      </a>
     </div>
-</body>
 
+    <script>
+      let spotKey = localStorage.getItem("spotKey");
+      let spotImage = localStorage.getItem("spotImage");
+      let image = document.getElementById("spotImage");
+      console.log("image", image);
+      image.src = spotImage;
+      console.log("image", image);
+
+      function nextPage() {
+        window.location = "skatespot.html";
+      }
+    </script>
+  </body>
 </html>

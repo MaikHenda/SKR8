@@ -1,43 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./css/details.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="./css/details.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+  https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCyLZ_IkVWuvVioIo0lOgt1RLQf6WVUTN0",
+      authDomain: "skr8-daf74.firebaseapp.com",
+      databaseURL: "https://skr8-daf74.firebaseio.com",
+      projectId: "skr8-daf74",
+      storageBucket: "skr8-daf74.appspot.com",
+      messagingSenderId: "803590686527",
+      appId: "1:803590686527:web:32ea6574661aba8faa758a",
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <body>
     <div class="nav">
-        <a href="./skatespot.html">
-            <img src="./assets/images/arrow.png"/>
-        </a>
-            
-        <img src="./assets/images/VOEG TYPE TOE.png" alt="heading">
+      <a href="./skatespot.html">
+        <img src="./assets/images/arrow.png" />
+      </a>
+
+      <img src="./assets/images/VOEG TYPE TOE.png" alt="heading" />
     </div>
 
     <div class="container">
       <div class="detail-box1">
-          <img src="./assets/images/Geef je spot een duidelijke naam en een gedetailleerde beschrijving.png" alt="">
-        </div>
-      <div class="detail-box2">
-          <p class="heading">SPOT NAME</p>
-          <input type="text" class="inputfield">
-      </div >
-      <div class="detail-box3">
-          <p class="heading2">SPOT BESCHRIJVING</p>
-          <input type="text" class="inputfield" placeholder="Beschrijf je spot, het materiaal, de kwaliteit, licht en obstakels" />
-      </div >
-      <div class="detail-box4">
-          <img src="./assets/images/Spots kunnen bijgewerkt worden en verwijderd wanneer deze niet voldoet.png" alt=""></div>
+        <img
+          src="./assets/images/Geef je spot een duidelijke naam en een gedetailleerde beschrijving.png"
+          alt=""
+        />
       </div>
-
-    <div class="footer">
-       <a href="./app.html">
-        <img src="./assets/images/VOEG SPOT TOE.png" alt="SPOT" />
-    </a>
-        
+      <div class="detail-box2">
+        <p class="heading">SPOT NAME</p>
+        <input id="txtName" type="text" class="inputfield" />
+      </div>
+      <div class="detail-box3">
+        <p class="heading2">SPOT BESCHRIJVING</p>
+        <input
+          id="txtDescription"
+          type="text"
+          class="inputfield"
+          placeholder="Beschrijf je spot, het materiaal, de kwaliteit, licht en obstakels"
+        />
+      </div>
+      <div class="detail-box4">
+        <img
+          src="./assets/images/Spots kunnen bijgewerkt worden en verwijderd wanneer deze niet voldoet.png"
+          alt=""
+        />
+      </div>
     </div>
 
-</body>
+    <div class="footer">
+      <button onclick="sendData();">
+        <img src="./assets/images/VOEG SPOT TOE.png" alt="SPOT" />
+      </button>
+    </div>
+  </body>
+
+  <script>
+    let txtName = document.getElementById("txtName");
+    let txtDescription = document.getElementById("txtDescription");
+    let spotKey = localStorage.getItem("spotKey");
+    let userId = localStorage.getItem("userId");
+    function sendData() {
+      if (txtName.value.length < 1 && txtDescription.value.length < 1) {
+        alert("Please enter the texts");
+      } else {
+        
+        firebase
+          .database()
+          .ref(`users/${userId}/spots/${spotKey}`)
+          .update({
+            name: txtName.value,
+            description: txtDescription.value,
+          })
+          .then((success) => {
+            console.log("push key", success);
+            window.location = "app.html";
+          });
+      }
+    }
+  </script>
 </html>

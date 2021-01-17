@@ -1,77 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /> 
-    <link rel="stylesheet" href="./css/score.css">
-</head>
-<body>
-    <div class="nav">
-        
-            <img src="./assets/images/SCORELIJST.png" class="addbtn"/>
-       
-       
-        <img src="./assets/images/addyellow 1.png"  alt="">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="./css/score.css" />
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-database.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyCyLZ_IkVWuvVioIo0lOgt1RLQf6WVUTN0",
+        authDomain: "skr8-daf74.firebaseapp.com",
+        databaseURL: "https://skr8-daf74.firebaseio.com",
+        projectId: "skr8-daf74",
+        storageBucket: "skr8-daf74.appspot.com",
+        messagingSenderId: "803590686527",
+        appId: "1:803590686527:web:32ea6574661aba8faa758a",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+  </head>
+  <body onload="getSpots()">
+    <div  class="nav">
+        <a href="addLocation.html">
+      <img src="./assets/images/SCORELIJST.png" class="addbtn" />
+    </a>
+      <img src="./assets/images/addyellow 1.png" alt="" />
+     
     </div>
     <div class="container">
-        <div class="box1">
-            <img src="./assets/images/De scorelijst houd bij welke gebruiker het meeste skatespots heeft toegevoegd. De winnaar krijgt een custom skate deck van SKR8.png" alt="">
-        </div>
-        <div class="box2">
-            <img src="./assets/images/ProfileBackground 1.png" class="box2img" alt="">
-            <h3 class="box2h3">JIJ</h3>
-            <p class="box2p">5 spots</p>
-        </div>
-        <div class="box3">
-            <table>
-                <tr>
-                    <td padd><b>Nr.1</b></td>
-                    <td><img src="./assets/images/ProfileBackground 1.png" alt=""></td>
-                    <td>Gebruiker 1</td>
-                    <td><button class="btn">Winnar</button></td>
-                    <td>62 sports</td>
-                </tr>
-                <tr>
-                    <td padd><b>Nr.2</b></td>
-                    <td><img src="./assets/images/ProfileBackground 1.png" alt=""></td>
-                    <td>Gebruiker 1</td>
-                    <td></td>
-                    <td>62 sports</td>
-                </tr>
-                <tr>
-                    <td padd><b>Nr.3</b></td>
-                    <td><img src="./assets/images/ProfileBackground 1.png" alt=""></td>
-                    <td>Gebruiker 1</td>
-                    <td></td>
-                    <td>62 sports</td>
-                </tr>
-                <tr>
-                    <td padd><b>Nr.4</b></td>
-                    <td><img src="./assets/images/ProfileBackground 1.png" alt=""></td>
-                    <td>Gebruiker 1</td>
-                    <td></td>
-                    <td>62 sports</td>
-                </tr>
-                <tr>
-                    <td padd><b>Nr.5</b></td>
-                    <td><img src="./assets/images/ProfileBackground 1.png" alt=""></td>
-                    <td>Gebruiker 1</td>
-                    <td></td>
-                    <td>62 sports</td>
-                </tr>
-            </table>
-        </div>
+      <div class="box1">
+        <img
+          src="./assets/images/De scorelijst houd bij welke gebruiker het meeste skatespots heeft toegevoegd. De winnaar krijgt een custom skate deck van SKR8.png"
+          alt=""
+        />
+      </div>
+      <div class="box2">
+        <img
+          src="./assets/images/ProfileBackground 1.png"
+          class="box2img"
+          alt=""
+        />
+        <h3 class="box2h3">JIJ</h3>
+        <p class="box2p">5 spots</p>
+      </div>
+      <div class="box3">
+        <table id="tableUser">
+          <!-- <tr>
+            <td padd><b>Nr.1</b></td>
+            <td>
+              <img src="./assets/images/ProfileBackground 1.png" alt="" />
+            </td>
+            <td>Gebruiker 1</td>
+            <td><button class="btn">Winnar</button></td>
+            <td>62 sports</td>
+          </tr>
+          <tr>
+            <td padd><b>Nr.2</b></td>
+            <td>
+              <img src="./assets/images/ProfileBackground 1.png" alt="" />
+            </td>
+            <td>Gebruiker 1</td>
+            <td></td>
+            <td>62 sports</td>
+          </tr>
+          <tr>
+            <td padd><b>Nr.3</b></td>
+            <td>
+              <img src="./assets/images/ProfileBackground 1.png" alt="" />
+            </td>
+            <td>Gebruiker 1</td>
+            <td></td>
+            <td>62 sports</td>
+          </tr>
+          <tr>
+            <td padd><b>Nr.4</b></td>
+            <td>
+              <img src="./assets/images/ProfileBackground 1.png" alt="" />
+            </td>
+            <td>Gebruiker 1</td>
+            <td></td>
+            <td>62 sports</td>
+          </tr>
+          <tr>
+            <td padd><b>Nr.5</b></td>
+            <td>
+              <img src="./assets/images/ProfileBackground 1.png" alt="" />
+            </td>
+            <td>Gebruiker 1</td>
+            <td></td>
+            <td>62 sports</td>
+          </tr> -->
+        </table>
+      </div>
     </div>
-        
-        <div class="footer">
-            <a href="./app.html">
-        <img src="./assets/images/Map 1.png" alt="">
 
-            </a>
-        <img src="./assets/images/addmain.png" alt="">
-        <img src="./assets/images/top 1.png" alt="">
+    <div class="footer">
+      <a href="./app.html">
+        <img src="./assets/images/Map 1.png" alt="" />
+      </a>
+      <img src="./assets/images/addmain.png" alt="" />
+      <img src="./assets/images/top 1.png" alt="" />
     </div>
-</body>
+  </body>
+  <script>
+    function getSpots() {
+      let id = localStorage.getItem("userId").toString();
+      let tr;
+      const getData = firebase.database().ref("users").child(id).child("spots");
+      getData.on("value", (snapshot) => {
+        let i = 1;
+        snapshot.forEach((snap) => {
+          console.log("snap", snap.val());
+          tr = `<tr>
+            <td padd><b>Nr.${i}</b></td>
+            <td>
+              <img src="./assets/images/ProfileBackground 1.png" alt="" />
+            </td>
+            <td>${snap.val().name}</td>
+            <td></td>
+          </tr>`;
+          document.getElementById("tableUser").innerHTML += tr;
+          i++;
+        });
+      });
+      (err) => {
+        console.log("error", err);
+      };
+    //   console.log('tr' , tr)
+    //   let table = document.getElementById("tableUser");
+    //   table.innerHTML = tr;
+    }
+  </script>
 </html>
